@@ -2,11 +2,11 @@ import { Evaluation as EvaluationType } from '@prisma/client';
 
 type EvaluationParams = Omit<EvaluationType, 'id'> & { id?: number };
 
-class Evaluation {
-  private id?: number;
-  private readonly score: number;
-  private readonly percentage: number;
-  private readonly subjectStudentId: number;
+class Evaluation implements Readonly<Omit<EvaluationType, 'id'>> {
+  id?: number;
+  readonly score: number;
+  readonly percentage: number;
+  readonly subjectStudentId: number;
 
   constructor(params: EvaluationParams) {
     this.id = params.id;
