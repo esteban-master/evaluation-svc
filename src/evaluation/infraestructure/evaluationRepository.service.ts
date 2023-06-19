@@ -3,26 +3,38 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Evaluation, Prisma } from '@prisma/client';
+import {
+  EvaluationRepository,
+  QueryParams,
+} from '../domain/evaluationRepository';
+import { Evaluation, EvaluationType } from '../domain/Evaluation';
 import { PrismaService } from 'src/config/database/prisma.service';
 
-type QueryParams = {
-  orderBy: keyof Prisma.EvaluationOrderByWithRelationInput;
-  order: 'asc' | 'desc';
-  studentId: string;
-};
-
 @Injectable()
-export class EvaluationService {
+export class EvaluationRepositoryService implements EvaluationRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(dto: any): Promise<Evaluation> {
-    const { percentage, score, subjectStudentId } = dto;
+  async get(queryParams: QueryParams): Promise<EvaluationType[]> {
+    const { studentId, order, orderBy } = queryParams;
+
+    return await this.prismaService.evaluation.findMany({
+      where: {
+        subjectStudent: {
+          studentId: studentId ? parseInt(studentId) : undefined,
+        },
+      },
+      orderBy: {
+        [orderBy]: order,
+      },
+    });
+  }
+
+  async create(evaluation: Evaluation): Promise<EvaluationType> {
+    const { percentage, score, subjectStudentId } = evaluation.toJson();
 
     const subjectStudent = await this.prismaService.subjectStudent.findUnique({
       where: { id: subjectStudentId },
     });
-
     if (subjectStudent) {
       try {
         const create = await this.prismaService.evaluation.create({
@@ -36,20 +48,5 @@ export class EvaluationService {
     }
 
     throw new BadRequestException('Asignatura de estudiante no válida');
-  }
-
-  async get(query: QueryParams) {
-    const { studentId, order, orderBy } = query;
-
-    return this.prismaService.evaluation.findMany({
-      where: {
-        subjectStudent: {
-          studentId: studentId ? parseInt(studentId) : undefined,
-        },
-      },
-      orderBy: {
-        [orderBy]: order,
-      },
-    });
   }
 }
