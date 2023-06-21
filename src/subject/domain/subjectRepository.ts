@@ -1,5 +1,6 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, SubjectStudent } from '@prisma/client';
 import { Subject, SubjectType } from './Subject';
+import { CreateSubjectStudentDto } from './createSubjectStudent.dto';
 
 export type QueryParams = {
   orderBy: keyof Prisma.SubjectOrderByWithRelationInput;
@@ -9,6 +10,10 @@ export type QueryParams = {
 export interface SubjectRepository {
   create(subject: Subject): Promise<SubjectType>;
   get(params: QueryParams): Promise<SubjectType[]>;
+  addSubjectStudent(
+    createSubjectStudentDto: CreateSubjectStudentDto,
+  ): Promise<SubjectStudent>;
+  getSubjectStudent(studentId: number): Promise<SubjectStudent[]>;
 }
 
 export const SubjectRepository = Symbol('SubjectRepository');

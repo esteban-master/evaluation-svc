@@ -17,4 +17,12 @@ export class SubjectService {
   async get(query: any) {
     return await this.subjectRepository.get(query);
   }
+
+  async addSubjectStudent(subjectStudent: any) {
+    return await this.subjectRepository.addSubjectStudent(subjectStudent);
+  }
+
+  async getSubjectStudent(studentId: number) {
+    return await this.subjectRepository.getSubjectStudent(studentId);
+  }
 }
