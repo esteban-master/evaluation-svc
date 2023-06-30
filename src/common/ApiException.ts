@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ApiExecption {
+export class ApiException {
   @ApiProperty({
     example: 400,
   })

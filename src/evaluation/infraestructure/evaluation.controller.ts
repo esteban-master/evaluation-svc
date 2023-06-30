@@ -9,7 +9,7 @@ import {
 import { QueryParams } from '../domain/evaluationRepository.interface';
 import { CreateEvaluationDto } from '../domain/createEvaluation.dto';
 import { Evaluation } from '../domain/Evaluation';
-import { ApiExecption } from 'src/common/ApiException';
+import { ApiException } from 'src/common/ApiException';
 
 @ApiTags('Evaluation')
 @Controller('evaluation')
@@ -36,7 +36,7 @@ export class EvaluationController {
     type: Evaluation,
   })
   @ApiBadRequestResponse({
-    type: ApiExecption,
+    type: ApiException,
   })
   @Post()
   async create(@Body() dto: CreateEvaluationDto) {
