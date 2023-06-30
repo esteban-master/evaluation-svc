@@ -1,11 +1,27 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Evaluation as EvaluationType } from '@prisma/client';
 
 type EvaluationParams = Omit<EvaluationType, 'id'> & { id?: number };
 
 class Evaluation implements Readonly<Omit<EvaluationType, 'id'>> {
-  id?: number;
+  @ApiProperty({
+    example: 3,
+  })
+  readonly id?: number;
+
+  @ApiProperty({
+    example: 43.4,
+  })
   readonly score: number;
+
+  @ApiProperty({
+    example: 32,
+  })
   readonly percentage: number;
+
+  @ApiProperty({
+    example: 2,
+  })
   readonly subjectStudentId: number;
 
   constructor(params: EvaluationParams) {

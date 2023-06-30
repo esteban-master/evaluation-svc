@@ -6,7 +6,7 @@ import {
 import {
   EvaluationRepository,
   QueryParams,
-} from '../domain/evaluationRepository';
+} from '../domain/evaluationRepository.interface';
 import { Evaluation, EvaluationType } from '../domain/Evaluation';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -47,6 +47,6 @@ export class EvaluationRepositoryService implements EvaluationRepository {
       }
     }
 
-    throw new BadRequestException('Asignatura de estudiante no válida');
+    throw new BadRequestException(['Asignatura de estudiante no válida']);
   }
 }

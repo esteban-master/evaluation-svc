@@ -2,8 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   EvaluationRepository,
   QueryParams,
-} from '../domain/evaluationRepository';
+} from '../domain/evaluationRepository.interface';
 import { Evaluation } from '../domain/Evaluation';
+import { CreateEvaluationDto } from '../domain/createEvaluation.dto';
 
 @Injectable()
 export class EvaluationService {
@@ -12,7 +13,7 @@ export class EvaluationService {
     private readonly evaluationRepository: EvaluationRepository,
   ) {}
 
-  async create(dto: any) {
+  async create(dto: CreateEvaluationDto) {
     const { percentage, score, subjectStudentId } = dto;
     const evaluation = new Evaluation({ percentage, score, subjectStudentId });
     return await this.evaluationRepository.create(evaluation);
